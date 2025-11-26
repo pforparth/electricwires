@@ -11,6 +11,9 @@ import {
 } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import app from "../firebaseConfig";
+import Header from "./components/Header";
+import ProductCard from "./components/ProductCard";
+import { products } from "./products/data";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -50,42 +53,18 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center font-sans">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16">
-        <h1 className="text-3xl font-semibold leading-10 tracking-tight text-center">
-          Electric wires
-        </h1>
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          {user ? (
-            <div>
-              <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-center">
-                Welcome, {user.displayName}
-              </h1>
-              <p className="max-w-md text-lg leading-8 text-zinc-600">
-                You are logged in with {user.email}
-              </p>
-              <button
-                onClick={handleLogout}
-                className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-red-600 px-5 text-white transition-colors hover:bg-red-700 md:w-[158px]"
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <div>
-              <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-center">
-                Please log in to continue
-              </h1>
-              <button
-                onClick={handleGoogleLogin}
-                className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-5 text-white transition-colors hover:bg-blue-700 md:w-[200px]"
-              >
-                Sign in with Google
-              </button>
-            </div>
-          )}
+    <div className="bg-gray-100 min-h-screen">
+      <Header 
+        user={user} 
+        handleLogout={handleLogout} 
+        handleGoogleLogin={handleGoogleLogin} 
+      />
+      <main className="p-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
-        <div></div>
       </main>
     </div>
   );
