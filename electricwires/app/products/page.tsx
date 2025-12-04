@@ -10,16 +10,15 @@ import {
   browserLocalPersistence,
 } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import app from "../firebaseConfig";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import ProductCard from "./components/ProductCard";
-import { products } from "./products/data";
+import app from "../../firebaseConfig";
+import Header from "../../app/components/Header";
+import ProductCard from "../../app/components/ProductCard";
+import { products } from "../../app/products/data";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export default function Home() {
+export default function ProductsPage() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -53,20 +52,17 @@ export default function Home() {
     }
   };
 
-  const featuredProducts = products.slice(0, 3);
-
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-gray-100 min-h-screen">
       <Header 
         user={user} 
         handleLogout={handleLogout} 
         handleGoogleLogin={handleGoogleLogin} 
       />
-      <Hero />
       <main className="p-8">
-        <h2 className="text-3xl font-bold text-center mb-10 text-gray-800">Featured Products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {featuredProducts.map((product) => (
+        <h1 className="text-4xl font-bold text-center mb-10 text-gray-800">Our Products</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

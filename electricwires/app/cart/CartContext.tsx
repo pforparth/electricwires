@@ -1,6 +1,7 @@
 'use client';
 import { createContext, useState, useContext, ReactNode } from 'react';
 import { Product } from '../products/data';
+import { useAuth } from '../AuthContext'; // Import useAuth
 
 interface CartItem extends Product {
   quantity: number;
@@ -26,8 +27,14 @@ export function useCart() {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { user } = useAuth(); // Get user from AuthContext
 
   const addToCart = (product: Product) => {
+    if (!user) {
+      alert('Please log in to add items to the cart.');
+      return;
+    }
+
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
       if (existingItem) {
